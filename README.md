@@ -5,5 +5,7 @@
 ## chapters
 
 * [01. 단위 테스트의 목표](/docs/chapter-01.md)
+* [02. 단위 테스트란 무엇인가](/docs/chapter-02.md)
+* [03. 단위 테스트 구조](/docs/chapter-03.md)
 
 [book-unit-testing-link]: https://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791161755748
