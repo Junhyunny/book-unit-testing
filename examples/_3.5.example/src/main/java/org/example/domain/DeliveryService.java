@@ -1,7 +1,10 @@
 package org.example.domain;
 
+import java.time.LocalDate;
+
 public class DeliveryService {
     public boolean isDeliveryValid(Delivery delivery) {
-        return false;
+        LocalDate now = LocalDate.now();
+        return delivery.isValidDeliveryDate(now);
     }
 }
