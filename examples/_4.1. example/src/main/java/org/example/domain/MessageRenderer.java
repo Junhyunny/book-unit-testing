@@ -9,4 +9,11 @@ public class MessageRenderer implements Renderer {
             new BodyRenderer(),
             new FooterRenderer()
     );
+
+    @Override
+    public String render(Message message) {
+        return subRenders.stream()
+                .map(renderer -> renderer.render(message))
+                .reduce("", (str1, str2) -> str1 + str2);
+    }
 }

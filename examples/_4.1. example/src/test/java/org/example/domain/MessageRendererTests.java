@@ -24,5 +24,16 @@ class MessageRendererTests {
         assertInstanceOf(renderers.get(2).getClass(), new FooterRenderer());
     }
 
+    @Test
+    void rendering_a_message() {
 
+        MessageRenderer sut = new MessageRenderer();
+        Message message = new Message("header", "body", "footer");
+
+
+        String html = sut.render(message);
+
+
+        assertEquals("<h1>header</h1><body>body</body><footer>footer</footer>", html);
+    }
 }

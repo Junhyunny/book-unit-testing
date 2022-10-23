@@ -137,3 +137,46 @@ SUT의 구현 세부 사항과 결합된 테스트는 리팩토링 내성이 없
 
 #### 4.1.4. 구현 세부 사항 대신 최종 결과를 목표로 하기
 
+테스트를 깨지지 않게 하고 리팩터링 내성을 높이는 방법은 SUT의 구현 세부 사항과 테스트 간의 결합도를 낮추는 것 뿐이다. 
+코드의 내부 작업과 테스트 사이를 가능한 머리 떨어뜨리고 최종 결과를 목표로 해야 한다. 
+
+##### MessageRenderer에서 생성하는 결과 검증
+
+* SUT가 생성하는 결과 값을 확인한다.
+* HTML 출력을 똑같이 지키는 한 SUT의 변경 사항은 테스트에 영향을 미치지 않는다. 
+
+```java
+package org.example.domain;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+class MessageRendererTests {
+
+    // ...
+
+    @Test
+    void rendering_a_message() {
+
+        MessageRenderer sut = new MessageRenderer();
+        Message message = new Message("header", "body", "footer");
+
+
+        String html = sut.render(message);
+
+
+        assertEquals("<h1>header</h1><body>body</body><footer>footer</footer>", html);
+    }
+}
+```
+
+단위 테스트는 최종 사용자에게 의미 있는 유일한 결과를 검증한다. 
+이런 테스트는 항상 적시에 실패하고 고객에게 영향을 줄 수 있는 어플리케이션 동작의 변경을 알려준다. 
+메소드가 변경되어 컴파일 오류가 발생하는 것도 거짓 양성으로 간주한다. 
+컴파일 오류 같은 거짓 양성은 해결하기 쉽다. 
+컴파일러를 따라 오류가 발생하는 메소드를 고치면 된다. 
+좋지 않은 거짓 양성은 컴파일 오류를 내지 않는 것이다. 
