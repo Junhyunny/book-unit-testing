@@ -86,4 +86,54 @@
 최종 사용자의 관점에서 SUT를 검증하고 최종 사용자에게 의미 있는 결과만 확인해야 한다. 
 다른 모든 것은 무시해야 한다. 
 
-테스트를 구성하기에 가장 좋은 방법은 문제 영역에 대해 이야기하는 것이다. 
+##### MessageRenderer 구조가 올바른지 확인
+
+* 하위 렌터링 클래스가 예상하는 유형이고, 올바른 순서인지 확인한다.
+* 처음에는 좋아보이지만, `MessageRender`의 식별할 수 있는 동작을 실제로 확인하지 않는다.
+* 하위 렌더링 클래스의 구성을 바꾸더라고 렌더링하는 HTML 내용은 바뀌지 않을 수 있다.
+* 최종 결과는 바뀌지 않지만, 테스트를 수행하면 실패한다. 
+* 이는 테스트가 SUT가 생성한 결과가 아니라 구현 세부 사항과 결합했기 때문이다. 
+* 이 테스트는 특정 구현만 예상해서 알고리즘을 검사하기 때문에 문제가 발생한다.
+
+```java
+package org.example.domain;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+class MessageRendererTests {
+
+    @Test
+    void messageRender_uses_correct_stub_renders() {
+
+        MessageRenderer sut = new MessageRenderer();
+
+
+        List<Renderer> renderers = sut.subRenders;
+
+
+        assertEquals(renderers.size(), 3);
+        assertInstanceOf(renderers.get(0).getClass(), new HeaderRenderer());
+        assertInstanceOf(renderers.get(1).getClass(), new BodyRenderer());
+        assertInstanceOf(renderers.get(2).getClass(), new FooterRenderer());
+    }
+}
+```
+
+`MessageRender` 클래스의 상당 부분을 리팩터링하면 테스트가 실패한다. 
+리팩터링 과정은 어플리케이션의 식별할 수 있는 동작에 영향을 주지 않으면서 구현을 변경하는 것이다. 
+변경할 때마다 테스트가 실패하는 이유는 구현 세부 사항에 연관되 있기 때문이다. 
+
+SUT의 구현 세부 사항과 결합된 테스트는 리팩토링 내성이 없다. 
+이런 테스트는 앞에서 설명한 모든 단점을 보여준다.
+
+* 회귀 발생 시 조기 경고를 제공하지 않는다. 
+* 대부분 잘못된 것이므로 이런 경고는 무시하게 된다.
+* 리팩토링에 대한 능력과 의지를 방해한다.
+
+#### 4.1.4. 구현 세부 사항 대신 최종 결과를 목표로 하기
+
