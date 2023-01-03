@@ -183,9 +183,24 @@ class MessageRendererTests {
 
 ##### 좋은 테스트와 좋지 않은 테스트
 
-<p align="center">
+<p align="center" style="border: 1px solid lightgray; border-radius: 5px;">
     <img src="/images/chapter-04-01.jpg" width="80%">
 </p>
 
 ### 4.2. 첫 번째 특성과 두 번째 특성 간의 본질적인 관계
 
+좋은 단위 테스트의 두 요소 사이에는 본질적인 관계가 있다.
+
+* 회귀 방지
+* 리팩토링 내성
+
+둘 다 정반대의 관점에서 테스트 스위트의 정확도에 기여한다. 
+프로젝트 초반엔 회귀 방지를 훌륭히 갖추는 것이 중요하지만, 리팩토링 내성은 바로 필요하지 않다. 
+
+#### 4.2.1. 테스트 정확도 극대화
+
+##### 코드 정확도와 테스트 결과
+
+<p align="center">
+    <img src="/images/chapter-04-02.jpg" width="80%">
+</p>
