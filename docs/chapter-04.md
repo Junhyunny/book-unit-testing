@@ -183,11 +183,9 @@ class MessageRendererTests {
 
 ##### 좋은 테스트와 좋지 않은 테스트
 
-<p align="center">
-    <kbd>
-        <img src="/images/chapter-04-01.jpg" width="80%">
-    </kbd>
-</p>
+<kbd>
+    <img src="/images/chapter-04-01.jpg" width="100%">
+</kbd>
 
 ### 4.2. 첫 번째 특성과 두 번째 특성 간의 본질적인 관계
 
@@ -203,6 +201,12 @@ class MessageRendererTests {
 
 ##### 코드 정확도와 테스트 결과
 
-<p align="center">
-    <img src="/images/chapter-04-02.jpg" width="80%">
-</p>
+* 코드 정확도와 테스트 결과에 대한 네 가지 결과가 있다.
+* 올바른 추론 - 참 음성
+    * 테스트가 실패하고, 구현체에 문제가 있는 상황이이므로 테스트는 의도적으로 동작했다.
+* 올바른 추론 - 참 양성
+    * 테스트가 정상적으로 통과하고, 구현체가 정상적으로 동작하므로 테스트는 의도적으로 동작했다.
+
+<kdb>
+    <img src="/images/chapter-04-02.jpg" width="100%">
+</kdb>
