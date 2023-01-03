@@ -183,9 +183,11 @@ class MessageRendererTests {
 
 ##### 좋은 테스트와 좋지 않은 테스트
 
-<kbd>
-    <img src="/images/chapter-04-01.jpg" width="100%">
-</kbd>
+<p align="center">
+    <kbd width="80%">
+        <img src="/images/chapter-04-01.jpg">
+    </kbd>
+</p>
 
 ### 4.2. 첫 번째 특성과 두 번째 특성 간의 본질적인 관계
 
@@ -207,6 +209,8 @@ class MessageRendererTests {
 * 올바른 추론 - 참 양성
     * 테스트가 정상적으로 통과하고, 구현체가 정상적으로 동작하므로 테스트는 의도적으로 동작했다.
 
-<kdb>
-    <img src="/images/chapter-04-02.jpg" width="100%">
-</kdb>
+<p align="center">
+    <kbd width="80%">
+        <img src="/images/chapter-04-02.jpg">
+    </kbd>
+</p>
