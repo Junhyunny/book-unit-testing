@@ -183,8 +183,8 @@ class MessageRendererTests {
 
 ##### 좋은 테스트와 좋지 않은 테스트
 
-<p align="center">
-    <img src="/images/chapter-04-01.jpg" width="80%" style="border: 1px solid lightgray; border-radius: 5px;">
+<p align="center" style="border: 1px solid lightgray; border-radius: 5px;">
+    <img src="/images/chapter-04-01.jpg" width="80%">
 </p>
 
 ### 4.2. 첫 번째 특성과 두 번째 특성 간의 본질적인 관계
