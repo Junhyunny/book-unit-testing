@@ -405,3 +405,52 @@ public class TooSimpleTests {
 
 #### 4.4.4. 극단적인 사례 4: 깨지기 쉬운 테스트
 
+실행이 빠르고 회귀를 잡을 가능성이 높지만, 거짓 양성이 많은 테스트를 작성하기 쉽다. 
+이를 깨지기 쉬운 테스트(brittle test)라고 한다. 
+리팩토링을 견디지 못하고, 해당 기능이 고장 났는지 여부와 관계없이 빨간색으로 바뀐다. 
+
+##### 깨지기 쉬운 테스트 예시
+
+* 이 테스트는 UserRepository 클래스가 올바른 SQL 쿼리를 실행했는지 확인한다.
+* 이 테스트로 시스템에 버그가 있는지 여부는 찾을 수 없다.
+* 이 테스트는 리팩토링 내성이 약하다.
+    * SQL 쿼리를 대문자로만 바꿔도 테스트가 실패한다.
+* 이 테스트는 SUT의 구현 세부 사항에 너무 결합된다.
+
+```java
+package com.example;
+
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+class UserRepository {
+
+    public User getById(int id) {
+        // ..
+        return null;
+    }
+
+    public String getLastExecutedSqlStatement() {
+        return "select * from user where user_id = ${userId}";
+    }
+}
+public class BrittleTests {
+
+    @Test
+    void brittle_test() {
+
+        UserRepository sut = new UserRepository();
+
+
+        User user = sut.getById(5);
+
+
+        assertThat(sut.getLastExecutedSqlStatement(), equalTo("select * from user where user_id = ${userId}"));
+    }
+}
+```
+
+#### 4.4.5. 이상적인 테스트를 찾아서: 결론
+
