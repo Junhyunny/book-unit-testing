@@ -66,5 +66,51 @@
     * 대다수의 목적에 부합하는 스텁이다.
     * 스텁과 차이점은 아직 존재하지 않는 의존성을 대체하고자 구현한다.
 
-#### 5.1.2. 도구로서의 목과 테스트 대역으로서의 목
+#### 5.1.3. 스텁으로 상호 작용을 검증하지 말라
+
+목은 SUT에서 나가는 상호 작용을 모방하고 검사한다. 
+스텁은 내부로 들어오는 상호 작용만 모방하고 검사하지 않는다. 
+이 두 가지 차이점은 스텁과 상호 작용을 검증하지 말라는 지침에서 나온다. 
+SUT에서 스텁으로의 호출은 SUT가 생성하는 최종 결과가 아니다. 
+이런 호출은 최종 결과를 산출하기 위한 수단이다. 
+즉, 스텁은 SUT가 출력을 생성하도록 입력을 제공하는 것 뿐이다. 
+
+테스트에서 거짓 양성을 피하고 리팩토링 내성을 향상시키는 방법은 구현 세부 사항이 아니라 최종 결과를 검증하는 것이다. 
+그래야지 실제 결과에 부합하며, 해당 결과는 도메인 전문가에게 의미가 있다. 
+
+다음은 깨지기 쉬운 테스트이다.
+
+* 최종 결과가 아닌 사항을 검증하는 관행을 과잉 명세(overspecification)이라고 부른다. 
+* 과잉 명세는 상호 작용을 검사할 때 가장 흔하게 발생한다.
+
+```java
+package com.example.book;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+class ApplicationTests {
+
+    @Test
+    void creating_a_report() {
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.getNumberOfUsers()).thenReturn(10);
+
+
+        ReportService sut = new DefaultReportService(userRepository);
+        Report report = sut.createReport();
+
+
+        assertThat(report.getNumberOfUser()).isEqualTo(10);
+        // 스텁으로 상호 작용을 검증한 코드
+        verify(userRepository, times(1)).getNumberOfUsers(); 
+    }
+}
+```
+
+#### 5.1.4. 목과 스텁 함께 쓰기
+
 
