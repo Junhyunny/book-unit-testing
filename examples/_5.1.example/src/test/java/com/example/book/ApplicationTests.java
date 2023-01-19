@@ -21,4 +21,18 @@ class ApplicationTests {
         assertThat(report.getNumberOfUser()).isEqualTo(10);
         verify(userRepository, times(1)).getNumberOfUsers();
     }
+
+    @Test
+    void purchase_fails_when_not_enough_inventory() {
+        Store store = Mockito.mock(Store.class);
+        when(store.hasEnoughInventory(Product.SHAMPOO, 5)).thenReturn(false);
+
+
+        Customer sut = new Customer();
+        boolean success = sut.purchase(store, Product.SHAMPOO, 5);
+
+
+        assertThat(success).isFalse();
+        verify(store, times(1)).removeInventory(Product.SHAMPOO, 5);
+    }
 }

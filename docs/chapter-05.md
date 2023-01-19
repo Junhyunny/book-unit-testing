@@ -113,4 +113,73 @@ class ApplicationTests {
 
 #### 5.1.4. 목과 스텁 함께 쓰기
 
+목과 스텁의 특성을 모두 나타내는 테스트 대역을 만들 필요가 있다. 
+
+* 이 테스트에서 `store` 객체를 두 가지 목적으로 사용한다.
+    * 준비된 응답을 반환하는 스텁
+    * SUT에서 수행한 메소드 호출을 검증을 위한 목
+* hasEnoughInventory 메소드를 사용해 응답을 설정한다.
+* removeInventory 메소드를 사용해 호출 여부를 검증한다.
+
+```java
+package com.example.book;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+class ApplicationTests {
+
+    @Test
+    void purchase_fails_when_not_enough_inventory() {
+        Store store = Mockito.mock(Store.class);
+        when(store.hasEnoughInventory(Product.SHAMPOO, 5)).thenReturn(false);
+
+
+        Customer sut = new Customer();
+        boolean success = sut.purchase(store, Product.SHAMPOO, 5);
+
+
+        assertThat(success).isFalse();
+        verify(store, times(1)).removeInventory(Product.SHAMPOO, 5);
+    }
+}
+```
+
+#### 5.1.5. 목과 스텁은명령과 조회에 어떻게 관련돼 있는가?
+
+목과 스텁은 명령 조회 분리(CQS, Command Query Seperation) 원칙과 관련이 있다. 
+CQS 원칙에 따르면 모든 메소드는 명령이거나 조회여야 한다. 
+
+명령은 부수 효과(side effect)를 일으키고, 어떤 값도 봔한하지 않는 메소드이다. 
+부수 효과는 다음과 같은 것들을 예로 들 수 있다.
+
+* 객체 상태 변경
+* 파일 시스템 내 파일 변경
+
+조회는 반대로 부수 효과가 없고, 값을 반환한다.
+
+명령 조회 원칙을 따르려면 다음과 같은 규칙을 따르면 된다. 
+
+* 메소드가 부수 효과를 일으키면 해당 메소드의 반환 타입이 void 인지 확인한다.
+* 메소드가 값을 반환하면 부작용이 없어야 한다. 
+
+질문할 때 답이 달라져셔는 안 된다. 
+이렇게 명확하게 분리하면 코드를 읽기 쉽다. 
+구현 세부 사항에 대해 자세히 설명하지 않고 시그니처만 봐도 메소드가 무엇을 하는지 알 수 있다. 
+
+하지만 항상 CQS 원칙을 따를 수 있는 것은 아니다. 
+전형적인 예로 스택(stack)을 들 수 있다. 
+스택의 pop 메소드는 스택 최상위 요소를 제거하여 클라이언트에게 반환한다. 
+
+테스트 코드에서 명령을 대체하는 테스트 대역은 목이다. 
+조회를 대처하는 테스트 대역은 스텁이다. 
+
+<p align="center">
+    <kbd>
+        <img src="/images/chapter-05-02.jpg">
+    </kbd>
+</p>
 
